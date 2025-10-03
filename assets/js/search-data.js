@@ -72,18 +72,7 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "https://iclr-blog-track.github.io/home/";
               },
-            },{id: "post-attention-is-all-we-do-not-need",
-        
-          title: "Attention is All We Do Not Need",
-        
-        description: "A blogpost on why attention is actually garbage. The transformer revolution has spawned a cult-like devotion to attention mechanisms, with researchers mindlessly chanting attention is all you need like some sort of neural network mantra. This paper serves as an intervention, brutally exposing how attention mechanisms are nothing more than glorified lookup tables that have somehow convinced the entire field they&#39;re revolutionary. We demonstrate that these computationally bloated, interpretability-destroying monstrosities create more problems than they solve, inducing training instabilities that would make a Victorian-era scientist weep. Through extensive experiments, we show that literally any other architecture—carrier pigeons trained on matrix multiplication, abacuses running backpropagation, even a sufficiently motivated intern with a calculator—can outperform attention-based models while using fewer parameters than a smartphone calculator app. Our results suggest that the field&#39;s Stockholm syndrome relationship with attention has reached pathological levels, and we propose immediate therapeutic intervention through a return to architectures that don&#39;t require a small country&#39;s power grid to determine if a sentence is about cats or dogs.",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/2026/blog/2026/my-test/";
-          
-        },
-      },{id: "post-sample-blog-post",
+            },{id: "post-sample-blog-post",
         
           title: "Sample Blog Post",
         
