@@ -26,7 +26,7 @@ authors:
 #       name: IAS, Princeton
 
 # must be the exact same name as your blogpost
-bibliography: /assets/bibliography/2026-04-27-illusion-of-mastery.bib
+bibliography: ../assets/bibliography/2026-04-27-illusion-of-mastery.bib
 
 # Add a table of contents to your post.
 #   - make sure that TOC names match the actual section names
@@ -63,7 +63,7 @@ In a recent interview [@ilya], Ilya Sutskever offered two key insights: The prob
 
 Therefore, the models' fragility stems from overfitting to the specific reasoning paradigms present in current static evaluation. Every time a static benchmark is "solved", the field falls into a cycle: Propose a harder static dataset $\rightarrow$ Scale up the model to overfit the new structure pattern $\rightarrow$ Propose an even harder dataset. This is a race of "memorization capacity vs. reasoning ability." We mistakenly believe the model is getting smarter, but it is often just expanding its capacity to memorize patterns, thereby missing the opportunity to discover genuine reasoning algorithms and moving further away from the goal of AGI. As a result, in real-world applications, models often fail when encountering novel "reasoning patterns" from users. These patterns are simple for humans but unsolvable via memorization, which accounts for the remaining 20% of tasks where models consistently fall short.
 
-![The vicious cycle: memory capacity vs. reasoning ability.](/assets/img/2026-04-27-illusion-of-mastery/figure1.png)
+![The vicious cycle: memory capacity vs. reasoning ability.](../assets/img/2026-04-27-illusion-of-mastery/figure1.png)
 *Figure 1: The vicious cycle: memory capacity vs. reasoning ability.*
 
 In this post, we argue that the path to AGI requires a fundamental shift in how we measure intelligence. We will examine how current static evaluation misleads the industry and introduce Generative Evaluation—not merely as a new metric, but as a dynamic engine capable of discovering novel reasoning patterns that are hard for models to generalize.
@@ -81,11 +81,11 @@ The acceleration of data collection and model training has created a race we are
 
 <div style="width: 100%; overflow: hidden;">
     <div style="width: 48%; float: left;">
-        <img src="/assets/img/2026-04-27-illusion-of-mastery/figure2.png" alt="Figure 2" style="width:100%;">
+        <img src="../assets/img/2026-04-27-illusion-of-mastery/figure2.png" alt="Figure 2" style="width:100%;">
         <p><em>Figure 2: DeepSeek-Instruct and GPT-4-O perform considerably worse on problems released after their respective release and cutoff dates (September and November 2023), indicating potential contamination in the earlier problems.</em></p>
     </div>
     <div style="width: 48%; float: right;">
-        <img src="/assets/img/2026-04-27-illusion-of-mastery/figure3.png" alt="Figure 3" style="width:100%;">
+        <img src="../assets/img/2026-04-27-illusion-of-mastery/figure3.png" alt="Figure 3" style="width:100%;">
         <p><em>Figure 3. The agent achieves promising results during training on a fixed sequence but fails to generalize when the level order is shuffled at test time.</em></p>
     </div>
 </div>
@@ -122,8 +122,8 @@ The creation of robust static benchmarks is an incredibly resource-intensive end
 - **Example Cost:** Projects like BIG-bench [@bigbench] involved the labor of over 440 top researchers for two years to collect $204$ diverse tasks, representing an implicit cost of millions of dollars. Similarly, the SuperGLUE [@superglue] benchmarks required $80+$ expert annotators.
 - **Fast Saturation:** Despite this immense investment, even these meticulously curated datasets face the same risk of rapid saturation and contamination. The moment a score is achieved, the data distribution is "seen," and the expensive benchmark begins its inevitable slide toward being a memory test. Even an Olympic-level difficult problem set AIME [@aime] can be 98.7% saturated within months of its release.
 
-![Benchmark saturation over time for popular benchmarks, normalized with initial performance at minus one and human performance at zero.](/assets/img/2026-04-27-illusion-of-mastery/figure4.png)
-*Figure 4. Benchmark saturation over time for popular benchmarks, normalized with initial performance at minus one and human performance at zero [@International-safety].*
+![Benchmark saturation over time for popular benchmarks, normalized with initial performance at minus one and human performance at zero.](../assets/img/2026-04-27-illusion-of-mastery/figure4.png)
+*Figure 4. Benchmark saturation over time for popular benchmarks, normalized with initial performance at minus one and human performance at zero [@international-safety].*
 
 ### 2.5 The Mismatch on the Path to AGI
 
@@ -153,14 +153,14 @@ This dimension represents coverage across distinct domains. Just as a student mu
 This often-overlooked dimension refers to generating variations within a single task type—tasks that share a goal but differ in their initial states or parameters. Using ALE as an example: typically, a game level's layout is fixed, allowing an agent to memorize a specific trajectory. However, this is where generative evaluation truly shines: it enables state space explosion.
 Consider this comparison: adding 100 different game levels merely requires the model to memorize 100 separate solutions. However, when introducing intra-task diversity, e.g., identifying 10 control variables for a game level (monster count, enemy health, inventory tools, etc.), each with 5 possible values, the state space grows to $10^5$ distinct configurations. This dramatically raises the difficulty of rote memorization and encourages generalized problem-solving.
 
-![The Procgen benchmark expands intra-task diversity, increasing the state space to massive magnitudes (x-axis). As observed, only when the state space exceeds a certain threshold can we truly measure generalization performance (where training and testing curves converge).](/assets/img/2026-04-27-illusion-of-mastery/figure5.png)
+![The Procgen benchmark expands intra-task diversity, increasing the state space to massive magnitudes (x-axis). As observed, only when the state space exceeds a certain threshold can we truly measure generalization performance (where training and testing curves converge).](../assets/img/2026-04-27-illusion-of-mastery/figure5.png)
 *Figure 5. The Procgen benchmark expands intra-task diversity, increasing the state space to massive magnitudes (x-axis). As observed, only when the state space exceeds a certain threshold can we truly measure generalization performance (where training and testing curves converge) [@procegen].*
 
 ### 3.3 Discovering Novel Reasoning Patterns
 
 However, not all task variables are effective. A common pitfall is generating variables that alter superficial aspects without creating new reasoning challenges. Research from UniCode [@unicode] reveals that sampling seed questions and merely changing the "story background" variable without altering the core logic does not result in significant performance differences. For example: when converted a card-game queue/stack simulation into an operating-system scheduling scenario (different narrative, same logic). This indicates that textual diversity alone is a solved problem for advanced LLMs and is not an "effective variable" for rigorous evaluation.
 
-![Modifying superficial text variables yields no performance gap between "seed" and "shadow" questions. In contrast, variables that alter core algorithm logic or introduce new knowledge combinations (CodeGenQS) create a substantial performance drop, proving they generate novel reasoning patterns.](/assets/img/2026-04-27-illusion-of-mastery/figure6.png)
+![Modifying superficial text variables yields no performance gap between "seed" and "shadow" questions. In contrast, variables that alter core algorithm logic or introduce new knowledge combinations (CodeGenQS) create a substantial performance drop, proving they generate novel reasoning patterns.](../assets/img/2026-04-27-illusion-of-mastery/figure6.png)
 *Figure 6. Modifying superficial text variables yields no performance gap between "seed" and "shadow" questions. In contrast, variables that alter core algorithm logic or introduce new knowledge combinations (CodeGenQS) create a substantial performance drop, proving they generate novel reasoning patterns [@unicode].*
 
 Therefore, the key is to identify "effective variables"—factors where a model's generalization is prone to break down. Current approaches often use expert intuition: decompose a task into candidate variables, and adjust one at a time while keeping others fixed. If a variable causes significant performance variation, it signals incomplete generalization and qualifies as effective. By identifying the right set of such variables, we unlock an infinite array of unique test cases, each embodying a novel reasoning pattern.
@@ -174,7 +174,7 @@ We must guarantee that the generated preconditions allow for a solution. Domain-
 - **Symbolic Guarantees:** KUMO [@kumo] employs a SAT Solver (Boolean Satisfiability) during the generation phase. This mathematically enforces that every generated game board has a valid logical path to the truth, preventing impossible scenarios.
 - **Simulator Verification:** MCU [@mcu] utilizes the MineStudio simulator, a popular test bed for the Minecraft platform, as a ground-truth verifier. The LLM-generated initialization commands are executed in the game engine; if the engine throws an error (e.g., Spawning a mob type that doesn't exist.), the system detects it and triggers a self-reflection loop to correct the initial configuration.
 
-![MineStudio acts as a natural verification environment, returning error codes to help correct mistakes in generative tasks.](/assets/img/2026-04-27-illusion-of-mastery/figure7.png)
+![MineStudio acts as a natural verification environment, returning error codes to help correct mistakes in generative tasks.](../assets/img/2026-04-27-illusion-of-mastery/figure7.png)
 *Figure 7. MineStudio acts as a natural verification environment, returning error codes to help correct mistakes in generative tasks [@mcu].*
 
 #### 3.4.2 Ensuring Label Correctness
