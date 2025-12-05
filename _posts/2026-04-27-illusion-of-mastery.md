@@ -1,6 +1,6 @@
 ---
 layout: distill
-title: The illusion of mastery: Breaking the Cycle of Benchmark Memorization with Generative Evaluation
+title: "The illusion of mastery: Breaking the Cycle of Benchmark Memorization with Generative Evaluation"
 description: Static evaluation traps LLMs in a cycle of overfitting, leading to inflated benchmark scores but fragile real-world performance. This post argues for a paradigm shift to Generative Evaluation, a dynamic engine that creates infinite novel tasks. By targeting unseen reasoning patterns and high-impact corner cases, it moves beyond memorization to genuinely measure and incentivize the generalizable intelligence required for AGI.
 date: 2026-12-04
 future: true
