@@ -26,7 +26,7 @@ authors:
 #       name: IAS, Princeton
 
 # must be the exact same name as your blogpost
-bibliography: 2026-04-27-illusion-of-mastery.bib
+bibliography: /assets/bibliography/2026-04-27-illusion-of-mastery.bib
 
 # Add a table of contents to your post.
 #   - make sure that TOC names match the actual section names
