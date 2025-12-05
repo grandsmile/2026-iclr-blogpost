@@ -33,7 +33,7 @@ bibliography: 2026-04-27-illusion-of-mastery.bib
 #     for hyperlinks within the post to work correctly.
 toc:
   - name: Introduction
-  - name: The Problem: The Failures of Static Evaluation
+  - name: "The Problem: The Failures of Static Evaluation"
     subsections:
       - name: The Contamination Illusion
       - name: The Stagnant 80% Crisis
