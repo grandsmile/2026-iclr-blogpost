@@ -1,6 +1,3 @@
-我看别人的figure路径和格式是这样写得，请你按他们的格式修改我的
-{% include figure.liquid path="assets/img/2026-04-27-sparsity/1.png" class="img-fluid" caption="Figure 1: Attention heatmaps showing naturally sparse patterns in dense models. Even with a full attention budget, models learn to concentrate attention on specific tokens rather than distributing it uniformly." %}
-
 ---
 layout: distill
 title: "The illusion of mastery: Breaking the Cycle of Benchmark Memorization with Generative Evaluation"
@@ -85,7 +82,7 @@ The acceleration of data collection and model training has created a race we are
     <div style="width: 48%; float: left;">
         {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure2.png" class="img-fluid" caption="Figure 2: DeepSeek-Instruct and GPT-4-O perform considerably worse on problems released after their respective release and cutoff dates (September and November 2023), indicating potential contamination in the earlier problems." %}
     </div>
-    <div style="width: 48%; float: right;">
+    <div style="width: 41%; float: right;">
         {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure3.png" class="img-fluid" caption="Figure 3. The agent achieves promising results during training on a fixed sequence but fails to generalize when the level order is shuffled at test time." %}
     </div>
 </div>
