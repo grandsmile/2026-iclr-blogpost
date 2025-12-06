@@ -6,6 +6,8 @@ date: 2026-04-27
 future: true
 htmlwidgets: true
 
+mathjax: true
+
 # anonymize when submitting
 authors:
   - name: Anonymous
@@ -55,9 +57,7 @@ toc:
 
 ## 1. Introduction
 
-The development of Large Language Models (LLMs) is accelerating at a breakneck pace <d-cite key="deepseek-r1,o1,gpt4"></d-cite>. On the surface, the metrics are dazzling: benchmarks are being saturated in record time, and models now exhibit superhuman performance on tasks like coding <d-cite key="livecodebench,swebench"></d-cite> or math competitions <d-cite key="gsm8k,aime"></d-cite>.
-
-However, despite these soaring benchmark scores, models often face an "80% Crisis" in real-world applications. For instance, when tasked with writing or debugging code, they frequently make surprisingly fundamental errors. Fixing one bug often introduces another. This leads to a natural question: Why does this gap exist?
+The development of Large Language Models (LLMs) is accelerating at a breakneck pace <d-cite key="deepseek-r1,o1,gpt4"></d-cite>. On the surface, the metrics are dazzling: benchmarks are being saturated in record time, and models now exhibit superhuman performance on tasks like coding <d-cite key="livecodebench,swebench"></d-cite> or math competitions <d-cite key="gsm8k,aime"></d-cite>. However, despite these soaring benchmark scores, models often face an "80% Crisis" in real-world applications. For instance, when tasked with writing or debugging code, they frequently make surprisingly fundamental errors. Fixing one bug often introduces another. This leads to a natural question: Why does this gap exist?
 
 In a recent interview <d-cite key="ilya"></d-cite>, Ilya Sutskever offered two key insights: The problem lies in data homogenization (most LLMs are pre-trained on similar web content, code, books) and post-training optimization that overfits to leaderboard benchmarks. Models are fine-tuned with reinforcement learning specifically designed around static test sets <d-cite key="rl-reasoning"></d-cite>, allowing them to excel in exam-like settings while performing like rote-learners in the real world.
 
@@ -80,10 +80,10 @@ The acceleration of data collection and model training has created a race we are
 
 <div style="width: 100%; overflow: hidden;">
     <div style="width: 48%; float: left;">
-        {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure2.png" class="img-fluid" caption="Figure 2: DeepSeek-Instruct and GPT-4-O perform considerably worse on problems released after their respective release and cutoff dates, indicating potential contamination in the earlier problems <d-cite key="livecodebench"></d-cite>." %}
+        {% include figure.liquid path='assets/img/2026-04-27-illusion-of-mastery/figure2.png' class='img-fluid' caption='Figure 2: DeepSeek-Instruct and GPT-4-O perform considerably worse on problems released after their respective release and cutoff dates, indicating potential contamination in the earlier problems <d-cite key="livecodebench"></d-cite>.' %}
     </div>
     <div style="width: 38%; float: right;">
-        {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure3.png" class="img-fluid" caption="Figure 3. The agent achieves promising results during training on a fixed sequence but fails to generalize when the level order is shuffled at test time <d-cite key="procegen"></d-cite>." %}
+        {% include figure.liquid path='assets/img/2026-04-27-illusion-of-mastery/figure3.png' class='img-fluid' caption='Figure 3. The agent achieves promising results during training on a fixed sequence but fails to generalize when the level order is shuffled at test time <d-cite key="procegen"></d-cite>.' %}
     </div>
 </div>
 
@@ -95,17 +95,20 @@ The first 80% of performance comes from high-frequency, common-knowledge pattern
 
 This leads to a resource paradox:
 According to scaling laws, improving performance on these sparse long-tail examples requires exponentially more parameters and data.
-Scaling laws describe how model loss \(L\) decreases as we scale up model size \(N\) and dataset size \(D\). A common form is:
-\[
-L \propto \alpha N^{-\beta} D^{-\gamma}
-\]
-Here:
-- \(L\) is the model's loss (lower is better)
-- \(N\) is the number of model parameters
-- \(D\) is the dataset size
-- \(\alpha, \beta, \gamma\) are constants (typically less than 1)
+Scaling laws describe how model loss $L$ decreases as we scale up model size $N$ and dataset size $D$. A common form is:
 
-As \(N\) or \(D\) increases, loss decreases but at a slowing rate. Early gains are rapid; later improvements become far more expensive. We are now spending billions for each marginal gain, chasing perfection via fixed pattern matching instead of developing generalizable algorithms for future challenges. Relying only on scaling is inefficient and unsustainable.
+$$
+L \propto \alpha N^{-\beta} D^{-\gamma}
+$$
+
+Here:
+
+- $L$ is the model's loss (lower is better)
+- $N$ is the number of model parameters
+- $D$ is the dataset size
+- $\alpha, \beta, \gamma$ are constants (typically less than 1)
+
+As $N$ or $D$ increases, loss decreases but at a slowing rate. Early gains are rapid; later improvements become far more expensive. We are now spending billions for each marginal gain, chasing perfection via fixed pattern matching instead of developing generalizable algorithms for future challenges. Relying only on scaling is inefficient and unsustainable.
 
 ### 2.3 Ignoring High-Impact Corner Cases
 
@@ -188,9 +191,11 @@ One might worry: "Is an automated evaluation pipeline as accurate as human evalu
 
 Human-curated evaluation carries zero system error, but due to the limited number of tasks, sampling error can be high. For example, if Model A and Model B perform equally well overall but excel in different areas, a small task set biased toward Model A's strengths may misleadingly show it as superior.
 In contrast, a generative evaluation system, while having some inherent system error, allows that error to be estimated and corrected. For instance, by testing the model on a small set of known wrong examples, we can measure its false pass rate $q_e$. Then, using the formula:
-\[
+
+$$
 p = \frac{\text{Observed Pass Rate} - \text{Generation Error Rate} \times q_e}{1 - \text{Generation Error Rate}}
-\]
+$$
+
 We can recover a calibrated estimate of the model's true performance. Moreover, with a sufficiently large and diverse set of tasks, the sampling error of the generative system becomes negligible. Therefore, by combining scalable task generation with systematic error correction, we can achieve a more reliable evaluation framework, even if it requires embracing a small amount of controlled noise.
 
 ### 4.2 Potential Influence on Society
