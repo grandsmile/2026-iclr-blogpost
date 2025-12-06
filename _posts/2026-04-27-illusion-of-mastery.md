@@ -1,7 +1,7 @@
 ---
 layout: distill
-title: "The illusion of mastery: Breaking the Cycle of Benchmark Memorization with Generative Evaluation"
-description: Static evaluation traps LLMs in a cycle of overfitting, leading to inflated benchmark scores but fragile real-world performance. This post argues for a paradigm shift to generative evaluation, a dynamic engine that creates infinite novel tasks. By targeting unseen reasoning patterns and high-impact corner cases, it moves beyond memorization to genuinely measure and incentivize the generalizable intelligence required for AGI.
+title: "The Illusion of Mastery: Breaking the Cycle of Benchmark Memorization with Generative Evaluation"
+description: Modern AI models that score perfectly on standardized benchmarks often fail in real-world applications. In this post, we first examine why current evaluation paradigms increasingly fail to capture how models perform in real-world scenarios, leading to an illusion of competence. Then, we introduce generative evaluation that automatically creates novel, diverse tasks every time a model is tested, and explain how it offers a more realistic way to measure what AI systems can actually do.
 date: 2026-04-27
 future: true
 htmlwidgets: true
@@ -77,17 +77,17 @@ The acceleration of data collection and model training has created a race we are
 
 - **The Misleading Result:** This data contamination results in deceptively inflated scores. This is evidenced by the significant performance gap observed on benchmarks like LiveCodeBench <d-cite key="livecodebench"></d-cite>. As shown in Figure 2, models excel on pre-release problems but show a marked drop in performance on post-release problems. This gap strongly suggests that the pre-release data was likely included in the model's training corpus.
 
-{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure2.png" class="img-fluid" caption="Figure 2: DeepSeek-Instruct and GPT-4-O perform considerably worse on problems released after their respective release and cutoff dates, indicating potential contamination in the earlier problems <d-cite key=\"livecodebench\"></d-cite>." %}
+{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure2.png" class="img-fluid" caption="Figure 2: DeepSeek-Instruct and GPT-4o perform considerably worse on problems released after their respective release and cutoff dates, indicating potential contamination in the earlier problems <d-cite key=\"livecodebench\"></d-cite>." %}
 
-- **The Memorization Trap:** Data contamination causes models to memorize rather than learn. This isn't just about remembering answers, for complex tasks, they memorize the expected sequence of a challenge. This is exemplified by OpenAI's Procgen test<d-cite key=\"procegen\"></d-ceite>: models trained on a fixed order of levels (progressing only upon success) perform perfectly. However, at test time, when the level order is randomized, they fail completely. This strongly suggests that the agents did not acquire a generalizable policy for the game, but rather memorized action sequences specific to the fixed level order.
+- **The Memorization Trap:** Data contamination causes models to memorize rather than learn. This isn't just about remembering answers, for complex tasks, they memorize the expected sequence of a challenge. This is exemplified by OpenAI's Procgen test<d-cite key=\"procegen\"></d-cite>: models trained on a fixed order of levels (progressing only upon success) perform perfectly. However, at test time, when the level order is randomized, they fail completely. This strongly suggests that the agents did not acquire a generalizable policy for the game, but rather memorized action sequences specific to the fixed level order.
 
-{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure3.png" class="img-fluid" caption="Figure 3: The agent achieves promising results during training on a fixed sequence but fails to generalize when the level order is shuffled at test time <d-cite key=\"procegen\"></d-ceite>." %}
+{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure3.png" class="img-fluid" caption="Figure 3: The agent achieves promising results during training on a fixed sequence but fails to generalize when the level order is shuffled at test time <d-cite key=\"procegen\"></d-cite>." %}
 
 ### 2.2 The Stagnant $80\%$ Crisis
 
 While increasing model and dataset sizes have equipped current models with a degree of generalization (e.g., solving unseen math problems), the "memorization trap" persists. It has simply evolved into a higher-level fixed pattern matching. Models memorize the fixed path to solve a specific set of problems but lack the ability to dynamically adjust reasoning path on novel context. A clear symptom of this trend is the widespread $80\%$ crisis, where models excel at the majority of common tasks but performance sharply drops on the remaining $20\%$ of novel challenges.
 
-Early models like BERT <d-cite key="bert"></d-ceite> made huge leaps, quickly reaching around $80\%$ accuracy on challenging benchmarks like SuperGLUE <d-cite key="superglue"></d-cite>. However, vastly larger models such as GPT-4<d-cite key="gpt-4"></d-ceite> and LLaMA variants <d-cite key="llama"></d-ceite> now only push performance up by a few marginal percentage points. This slowdown occurs because the final $20\%$ consists of rare and diverse corner cases—the "long tail pattern". We are essentially spending billions of dollars to buy those final, expensive $1\%$ gains.
+Early models like BERT <d-cite key="bert"></d-cite> made huge leaps, quickly reaching around $80\%$ accuracy on challenging benchmarks like SuperGLUE <d-cite key="superglue"></d-cite>. However, vastly larger models such as GPT-4<d-cite key="gpt-4"></d-cite> and LLaMA variants <d-cite key="llama"></d-cite> now only push performance up by a few marginal percentage points. This slowdown occurs because the final $20\%$ consists of rare and diverse corner cases—the "long tail pattern". We are essentially spending billions of dollars to buy those final, expensive $1\%$ gains.
 
 This leads to a resource paradox: according to scaling laws, improving performance on these sparse long-tail examples requires exponentially more parameters and data.
 Scaling laws describe how model loss $L$ decreases as we scale up model size $N$ and dataset size $D$. A common form is:
@@ -116,6 +116,8 @@ In high-stakes domains such as autonomous driving, $98\%$ of the data might be c
 If our final destination is AGI, we have a fundamental problem: we are currently using finite sets to evaluate an AGI that is defined by its ability to solve unlimited diverse tasks. There is a mismatch between our target and our actual evaluation methods, creating a gap between AGI and current SOTA models. We want agents to be open-ended, possessing the capacity to generate endless solutions for scenarios that may not yet exist <d-cite key="open,mcu,international-safety"></d-cite>. As Elon Musk said in an interview: if an spaceship lands on the highway, a truly intelligent autonomous driving system must react correctly. Our objective is a "super-agent" capable of handling infinite novelty, not merely taking a fixed exam.
 
 
+
+<!-- 
 ### 2.5 High Cost and Inefficiency
 
 The creation of robust static benchmarks is an incredibly resource-intensive endeavor, and even the best efforts are short-lived.
@@ -125,7 +127,10 @@ The creation of robust static benchmarks is an incredibly resource-intensive end
 
 <div style="width: 95%; margin: 0 auto;">
 {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure4.png" class="img-fluid" caption="Figure 4. Benchmark saturation over time for popular benchmarks, normalized with initial performance at minus one and human performance at zero <d-cite key=\"international-safety\"></d-cite>." %}
-</div> 
+</div>  -->
+
+
+
 
 ## 3. The Blueprint of Generative Evaluation
 
@@ -149,7 +154,7 @@ This dimension represents coverage across distinct domains. Just as a student mu
 
 #### 3.2.2 Intra-task Diversity: The Depth of Variation
 This often-overlooked dimension refers to generating variations within a single task type—tasks that share a goal but differ in their initial states or parameters. Using ALE as an example: typically, a game level's layout is fixed, allowing an agent to memorize a specific trajectory. However, this is where generative evaluation truly shines: it enables state space explosion.
-Consider this comparison: adding 100 different game levels merely requires the model to memorize 100 separate solutions. However, when introducing intra-task diversity, e.g., identifying 10 control variables for a game level (monster count, enemy health, inventory tools, etc.), each with 5 possible values, the state space grows to $10^5$ distinct configurations. This dramatically raises the difficulty of rote memorization and encourages generalized problem-solving.
+Consider this comparison: adding 100 different game levels merely requires the model to memorize 100 separate solutions. However, when introducing intra-task diversity, e.g., identifying 10 control variables for a game level (monster count, enemy health, inventory tools, etc.), each with 5 possible values, the state space grows to $5^{10}$ distinct configurations. This dramatically raises the difficulty of rote memorization and encourages generalized problem-solving.
 
 {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure5.png" class="img-fluid" caption="Figure 5. The Procgen benchmark expands intra-task diversity, increasing the state space to massive magnitudes (x-axis). As observed, only when the state space exceeds a certain threshold can we truly measure generalization performance (where training and testing curves converge) <d-cite key=\"procegen\"></d-cite>." %}
 
