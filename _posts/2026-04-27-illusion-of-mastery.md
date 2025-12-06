@@ -80,10 +80,10 @@ The acceleration of data collection and model training has created a race we are
 
 <div style="width: 100%; overflow: hidden;">
     <div style="width: 48%; float: left;">
-        {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure2.png" class="img-fluid" caption="Figure 2: DeepSeek-Instruct and GPT-4-O perform considerably worse on problems released after their respective release and cutoff dates (September and November 2023), indicating potential contamination in the earlier problems." %}
+        {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure2.png" class="img-fluid" caption="Figure 2: DeepSeek-Instruct and GPT-4-O perform considerably worse on problems released after their respective release and cutoff dates, indicating potential contamination in the earlier problems <d-cite key="livecodebench"></d-cite>." %}
     </div>
-    <div style="width: 39%; float: right;">
-        {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure3.png" class="img-fluid" caption="Figure 3. The agent achieves promising results during training on a fixed sequence but fails to generalize when the level order is shuffled at test time." %}
+    <div style="width: 38%; float: right;">
+        {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure3.png" class="img-fluid" caption="Figure 3. The agent achieves promising results during training on a fixed sequence but fails to generalize when the level order is shuffled at test time <d-cite key="procegen"></d-cite>." %}
     </div>
 </div>
 
@@ -119,7 +119,7 @@ The creation of robust static benchmarks is an incredibly resource-intensive end
 - **Example Cost:** Projects like BIG-bench <d-cite key="bigbench"></d-cite> involved the labor of over 440 top researchers for two years to collect $204$ diverse tasks, representing an implicit cost of millions of dollars. Similarly, the SuperGLUE <d-cite key="superglue"></d-cite> benchmarks required $80+$ expert annotators.
 - **Fast Saturation:** Despite this immense investment, even these meticulously curated datasets face the same risk of rapid saturation and contamination. The moment a score is achieved, the data distribution is "seen," and the expensive benchmark begins its inevitable slide toward being a memory test. Even an Olympic-level difficult problem set AIME <d-cite key="aime"></d-cite> can be 98.7% saturated within months of its release.
 
-{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure4.png" class="img-fluid" caption="Figure 4. Benchmark saturation over time for popular benchmarks, normalized with initial performance at minus one and human performance at zero <d-cite key=\"international-safety\"></d-cite>." %}
+{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure4.png" class="img-fluid" caption="Figure 4. Benchmark saturation over time for popular benchmarks, normalized with initial performance at minus one and human performance at zero <d-cite key="international-safety"></d-cite>." %}
 
 ### 2.5 The Mismatch on the Path to AGI
 
@@ -149,13 +149,13 @@ This dimension represents coverage across distinct domains. Just as a student mu
 This often-overlooked dimension refers to generating variations within a single task type—tasks that share a goal but differ in their initial states or parameters. Using ALE as an example: typically, a game level's layout is fixed, allowing an agent to memorize a specific trajectory. However, this is where generative evaluation truly shines: it enables state space explosion.
 Consider this comparison: adding 100 different game levels merely requires the model to memorize 100 separate solutions. However, when introducing intra-task diversity, e.g., identifying 10 control variables for a game level (monster count, enemy health, inventory tools, etc.), each with 5 possible values, the state space grows to $10^5$ distinct configurations. This dramatically raises the difficulty of rote memorization and encourages generalized problem-solving.
 
-{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure5.png" class="img-fluid" caption="Figure 5. The Procgen benchmark expands intra-task diversity, increasing the state space to massive magnitudes (x-axis). As observed, only when the state space exceeds a certain threshold can we truly measure generalization performance (where training and testing curves converge) <d-cite key=\"procegen\"></d-cite>." %}
+{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure5.png" class="img-fluid" caption="Figure 5. The Procgen benchmark expands intra-task diversity, increasing the state space to massive magnitudes (x-axis). As observed, only when the state space exceeds a certain threshold can we truly measure generalization performance (where training and testing curves converge) <d-cite key="procegen"></d-cite>." %}
 
 ### 3.3 Discovering Novel Reasoning Patterns
 
 However, not all task variables are effective. A common pitfall is generating variables that alter superficial aspects without creating new reasoning challenges. Research from UniCode <d-cite key="unicode"></d-cite> reveals that sampling seed questions and merely changing the "story background" variable without altering the core logic does not result in significant performance differences. For example: when converted a card-game queue/stack simulation into an operating-system scheduling scenario (different narrative, same logic). This indicates that textual diversity alone is a solved problem for advanced LLMs and is not an "effective variable" for rigorous evaluation.
 
-{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure6.png" class="img-fluid" caption="Figure 6. Modifying superficial text variables yields no performance gap between 'seed' and 'shadow' questions. In contrast, variables that alter core algorithm logic or introduce new knowledge combinations (CodeGenQS) create a substantial performance drop, proving they generate novel reasoning patterns <d-cite key=\"unicode\"></d-cite>." %}
+{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure6.png" class="img-fluid" caption="Figure 6. Modifying superficial text variables yields no performance gap between 'seed' and 'shadow' questions. In contrast, variables that alter core algorithm logic or introduce new knowledge combinations (CodeGenQS) create a substantial performance drop, proving they generate novel reasoning patterns <d-cite key="unicode"></d-cite>." %}
 
 Therefore, the key is to identify "effective variables"—factors where a model's generalization is prone to break down. Current approaches often use expert intuition: decompose a task into candidate variables, and adjust one at a time while keeping others fixed. If a variable causes significant performance variation, it signals incomplete generalization and qualifies as effective. By identifying the right set of such variables, we unlock an infinite array of unique test cases, each embodying a novel reasoning pattern.
 
@@ -168,7 +168,7 @@ We must guarantee that the generated preconditions allow for a solution. Domain-
 - **Symbolic Guarantees:** KUMO <d-cite key="kumo"></d-cite> employs a SAT Solver (Boolean Satisfiability) during the generation phase. This mathematically enforces that every generated game board has a valid logical path to the truth, preventing impossible scenarios.
 - **Simulator Verification:** MCU <d-cite key="mcu"></d-cite> utilizes the MineStudio simulator, a popular test bed for the Minecraft platform, as a ground-truth verifier. The LLM-generated initialization commands are executed in the game engine; if the engine throws an error (e.g., Spawning a mob type that doesn't exist.), the system detects it and triggers a self-reflection loop to correct the initial configuration.
 
-{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure7.png" class="img-fluid" caption="Figure 7. MineStudio acts as a natural verification environment, returning error codes to help correct mistakes in generative tasks <d-cite key=\"mcu\"></d-cite>." %}
+{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure7.png" class="img-fluid" caption="Figure 7. MineStudio acts as a natural verification environment, returning error codes to help correct mistakes in generative tasks <d-cite key="mcu"></d-cite>." %}
 
 #### 3.4.2 Ensuring Label Correctness
 Without human labels, grading must also be automated. Solutions vary by task type:
@@ -180,7 +180,7 @@ Both stages can be validated by periodically sampling tasks for human review.
 
 ## 4. Discussion
 
-### 4.1 Error in Generative Frameworks
+### 4.1 Errors in Generative Frameworks
 
 One might worry: "Is an automated evaluation pipeline as accurate as human evaluation?" In practice, as data scales up, 100% accuracy becomes an impractical goal. When the test set is uncontaminated, the total error primarily comes from two sources:
 - Sampling error, influenced by the number of tasks;
@@ -197,10 +197,6 @@ We can recover a calibrated estimate of the model's true performance. Moreover, 
 
 Static datasets inevitably suffer from inherent human bias, conflicts of interest, and financial incentives <d-cite key="peeking"></d-cite>. For instance, when an evaluation firm also provides training data, it faces an ethical conflict, incentivized to design benchmarks that favor its clients' models. Furthermore, expert annotators introduce subjective preference bias; if they previously contributed to a model's training data, their unconscious criteria may align with that model's style. This systematic human bias prevents scores from reflecting real-world performance for a diverse user base. Generative Evaluation offers a critical path to mitigate these external biases by automating and standardizing the task creation process, potentially utilizing multiple LLM generators to further diversify and neutralize output biases.
 
-### 4.3 Limitations
+### 4.3 Limitations and Future Work
 
-Generative evaluation still heavily rely on human priors to pick variables. Previously, datasets like Dynabench used human annotators to manually flag adversarial examples where models failed <d-cite key="dynabench"></d-cite>. Now, we have elevated the abstraction level from the "sample" to the "variable," which significantly saves time and allows for automated generation. However, the selection of these variable factors still relies strongly on expert knowledge. If the variables are poorly defined, the quality of the entire dataset suffers.
-
-### 4.3 Limitations
-
-Generative evaluation still heavily rely on human priors to pick variables. Previously, datasets like Dynabench used human annotators to manually flag adversarial examples where models failed <d-cite key="kiela2021dynabench"></d-cite>. Now, we have elevated the abstraction level from the "sample" to the "variable," which significantly saves time and allows for automated generation. However, the selection of these variable factors still relies strongly on expert knowledge. Future work may explore adaptive generation systems that can dynamically decompose these variables and adjust difficulty based on model behavior.
+Generative evaluation still heavily rely on human priors to pick variables. Previously, datasets like Dynabench used human annotators to manually flag adversarial examples where models failed <d-cite key="dynabench"></d-cite>. Now, we have elevated the abstraction level from the "sample" to the "variable," which significantly saves time and allows for automated generation. However, the selection of these variable factors still relies strongly on expert knowledge. Future work may explore adaptive generation systems that can dynamically decompose these variables and adjust difficulty based on model behavior.
