@@ -2,7 +2,7 @@
 layout: distill
 title: "The illusion of mastery: Breaking the Cycle of Benchmark Memorization with Generative Evaluation"
 description: Static evaluation traps LLMs in a cycle of overfitting, leading to inflated benchmark scores but fragile real-world performance. This post argues for a paradigm shift to Generative Evaluation, a dynamic engine that creates infinite novel tasks. By targeting unseen reasoning patterns and high-impact corner cases, it moves beyond memorization to genuinely measure and incentivize the generalizable intelligence required for AGI.
-date: 2026-12-04
+date: 2026-04-27
 future: true
 htmlwidgets: true
 
@@ -55,11 +55,11 @@ toc:
 
 ## 1. Introduction
 
-The development of Large Language Models (LLMs) is accelerating at a breakneck pace [@deepseek-r1; @o1; @gpt4]. On the surface, the metrics are dazzling: benchmarks are being saturated in record time, and models now exhibit superhuman performance on tasks like coding [@livecodebench; @swebench] or math competitions [@gsm8k; @aime].
+The development of Large Language Models (LLMs) is accelerating at a breakneck pace <d-cite key="deepseek-r1,o1,gpt4"></d-cite>. On the surface, the metrics are dazzling: benchmarks are being saturated in record time, and models now exhibit superhuman performance on tasks like coding <d-cite key="livecodebench,swebench"></d-cite> or math competitions <d-cite key="gsm8k,aime"></d-cite>.
 
 However, despite these soaring benchmark scores, models often face an "80% Crisis" in real-world applications. For instance, when tasked with writing or debugging code, they frequently make surprisingly fundamental errors. Fixing one bug often introduces another. This leads to a natural question: Why does this gap exist?
 
-In a recent interview [@ilya], Ilya Sutskever offered two key insights: The problem lies in data homogenization (most LLMs are pre-trained on similar web content, code, books) and post-training optimization that overfits to leaderboard benchmarks. Models are fine-tuned with reinforcement learning specifically designed around static test sets [@rl-reasoning], allowing them to excel in exam-like settings while performing like rote-learners in the real world.
+In a recent interview <d-cite key="ilya"></d-cite>, Ilya Sutskever offered two key insights: The problem lies in data homogenization (most LLMs are pre-trained on similar web content, code, books) and post-training optimization that overfits to leaderboard benchmarks. Models are fine-tuned with reinforcement learning specifically designed around static test sets <d-cite key="rl-reasoning"></d-cite>, allowing them to excel in exam-like settings while performing like rote-learners in the real world.
 
 Therefore, the models' fragility stems from overfitting to the specific reasoning paradigms present in current static evaluation. Every time a static benchmark is "solved", the field falls into a cycle: Propose a harder static dataset $\rightarrow$ Scale up the model to overfit the new structure pattern $\rightarrow$ Propose an even harder dataset. This is a race of "memorization capacity vs. reasoning ability." We mistakenly believe the model is getting smarter, but it is often just expanding its capacity to memorize patterns, thereby missing the opportunity to discover genuine reasoning algorithms and moving further away from the goal of AGI. As a result, in real-world applications, models often fail when encountering novel "reasoning patterns" from users. These patterns are simple for humans but unsolvable via memorization, which accounts for the remaining 20% of tasks where models consistently fall short.
 
@@ -73,7 +73,7 @@ The current reliance on fixed, static evaluation benchmarks is actively misleadi
 
 ### 2.1 The Contamination Illusion
 
-The acceleration of data collection and model training has created a race we are losing: human benchmark design cannot keep pace with data crawler speed. A benchmark considered challenging upon release often sees a rapid, dramatic performance leap within months [@livecodebench; @dynabench]. This improvement frequently signals not an advancement in the model's reasoning, but data contamination: the test data has leaked into the training set, effectively allowing the model to memorize the answers.
+The acceleration of data collection and model training has created a race we are losing: human benchmark design cannot keep pace with data crawler speed. A benchmark considered challenging upon release often sees a rapid, dramatic performance leap within months <d-cite key="livecodebench,dynabench"></d-cite>. This improvement frequently signals not an advancement in the model's reasoning, but data contamination: the test data has leaked into the training set, effectively allowing the model to memorize the answers.
 
 - **The Misleading Result:** This data contamination results in deceptively inflated scores. This is evidenced by the significant performance gap observed on benchmarks like LiveCodeBench: models excel on pre-release problems but show a marked drop in performance on post-release problems. This gap strongly suggests that the pre-release data was likely included in the model's training corpus.
 - **The Memorization Trap:** Data contamination causes models to memorize rather than learn. This isn't just about remembering answers, for complex tasks, they memorize the expected sequence of a challenge. This is exemplified by OpenAI's Procgen test: models trained on a fixed order of levels (progressing only upon success) perform perfectly. However, at test time, when the level order is randomized, they fail completely. This proves they did not learn to play the game; they simply memorized the expected sequence of actions.
@@ -82,7 +82,7 @@ The acceleration of data collection and model training has created a race we are
     <div style="width: 48%; float: left;">
         {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure2.png" class="img-fluid" caption="Figure 2: DeepSeek-Instruct and GPT-4-O perform considerably worse on problems released after their respective release and cutoff dates (September and November 2023), indicating potential contamination in the earlier problems." %}
     </div>
-    <div style="width: 41%; float: right;">
+    <div style="width: 39%; float: right;">
         {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure3.png" class="img-fluid" caption="Figure 3. The agent achieves promising results during training on a fixed sequence but fails to generalize when the level order is shuffled at test time." %}
     </div>
 </div>
@@ -91,7 +91,7 @@ The acceleration of data collection and model training has created a race we are
 
 While increasing model and dataset sizes have equipped current models with a degree of generalization (e.g., solving unseen math problems), the "memorization trap" persists. It has simply evolved into a higher-level fixed pattern matching. Models memorize the fixed path to solve a specific set of problems but lack the ability to dynamically adjust reasoning path on novel context. A clear symptom of this trend is the widespread 80% crisis:
 
-The first 80% of performance comes from high-frequency, common-knowledge patterns that follow the head of a power-law distribution. Early models like BERT made huge leaps, quickly reaching around 80% accuracy on challenging benchmarks like SuperGLUE [@superglue]. However, vastly larger models such as GPT-4 and LLaMA variants now only push performance up by a few marginal percentage points. This slowdown occurs because the final 20% consists of rare and diverse corner cases—the "long tail pattern". We are essentially spending billions of dollars to buy those final, expensive $1\%$ gains.
+The first 80% of performance comes from high-frequency, common-knowledge patterns that follow the head of a power-law distribution. Early models like BERT made huge leaps, quickly reaching around 80% accuracy on challenging benchmarks like SuperGLUE <d-cite key="superglue"></d-cite>. However, vastly larger models such as GPT-4 and LLaMA variants now only push performance up by a few marginal percentage points. This slowdown occurs because the final 20% consists of rare and diverse corner cases—the "long tail pattern". We are essentially spending billions of dollars to buy those final, expensive $1\%$ gains.
 
 This leads to a resource paradox:
 According to scaling laws, improving performance on these sparse long-tail examples requires exponentially more parameters and data.
@@ -116,10 +116,10 @@ In real-world, high-stakes applications (like autonomous driving), $98\%$ of the
 
 The creation of robust static benchmarks is an incredibly resource-intensive endeavor, and even the best efforts are short-lived.
 
-- **Example Cost:** Projects like BIG-bench [@bigbench] involved the labor of over 440 top researchers for two years to collect $204$ diverse tasks, representing an implicit cost of millions of dollars. Similarly, the SuperGLUE [@superglue] benchmarks required $80+$ expert annotators.
-- **Fast Saturation:** Despite this immense investment, even these meticulously curated datasets face the same risk of rapid saturation and contamination. The moment a score is achieved, the data distribution is "seen," and the expensive benchmark begins its inevitable slide toward being a memory test. Even an Olympic-level difficult problem set AIME [@aime] can be 98.7% saturated within months of its release.
+- **Example Cost:** Projects like BIG-bench <d-cite key="bigbench"></d-cite> involved the labor of over 440 top researchers for two years to collect $204$ diverse tasks, representing an implicit cost of millions of dollars. Similarly, the SuperGLUE <d-cite key="superglue"></d-cite> benchmarks required $80+$ expert annotators.
+- **Fast Saturation:** Despite this immense investment, even these meticulously curated datasets face the same risk of rapid saturation and contamination. The moment a score is achieved, the data distribution is "seen," and the expensive benchmark begins its inevitable slide toward being a memory test. Even an Olympic-level difficult problem set AIME <d-cite key="aime"></d-cite> can be 98.7% saturated within months of its release.
 
-{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure4.png" class="img-fluid" caption="Figure 4. Benchmark saturation over time for popular benchmarks, normalized with initial performance at minus one and human performance at zero [@international-safety]." %}
+{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure4.png" class="img-fluid" caption="Figure 4. Benchmark saturation over time for popular benchmarks, normalized with initial performance at minus one and human performance at zero <d-cite key=\"international-safety\"></d-cite>." %}
 
 ### 2.5 The Mismatch on the Path to AGI
 
@@ -140,22 +140,22 @@ Generative Evaluation fundamentally addresses the core failures of static benchm
 ### 3.2 Generating Diverse, Contamination-Resistant Tasks
 
 Simply instructing an LLM to "generate 100 new questions" often yields repetitive, low-quality output. A robust generative framework must follow a structured pipeline ensuring both diversity (to prevent memorization) and validity (to ensure fairness).
-Based on recent cutting-edge research in generative evaluation [@mcu; @dynabench; @procegen; @kumo; @unicode], we can distill diversity into two main directions:
+Based on recent cutting-edge research in generative evaluation <d-cite key="mcu,dynabench,procegen,kumo,unicode"></d-cite>, we can distill diversity into two main directions:
 
 #### 3.2.1 Inter-task Diversity: The Breadth of Knowledge
-This dimension represents coverage across distinct domains. Just as a student must study Math, History, and Science, an AI agent must be tested across different domains. Inter-task diversity has long been valued in static datasets (e.g., the ALE benchmark [@ALE] with 55 different games). Generative evaluation frameworks maintain this breadth: for instance, MCU spans 11 major categories and 41 subcategories (e.g., Combat, Farming) [@mcu], UniCode organizes tasks by 15 algorithmic tags (e.g., Dynamic Programming) [@unicode], and KUMO generates scenarios across 100 distinct domains [@kumo]. This prevents models from becoming narrow specialists.
+This dimension represents coverage across distinct domains. Just as a student must study Math, History, and Science, an AI agent must be tested across different domains. Inter-task diversity has long been valued in static datasets (e.g., the ALE benchmark <d-cite key="ALE"></d-cite> with 55 different games). Generative evaluation frameworks maintain this breadth: for instance, MCU spans 11 major categories and 41 subcategories (e.g., Combat, Farming) <d-cite key="mcu"></d-cite>, UniCode organizes tasks by 15 algorithmic tags (e.g., Dynamic Programming) <d-cite key="unicode"></d-cite>, and KUMO generates scenarios across 100 distinct domains <d-cite key="kumo"></d-cite>. This prevents models from becoming narrow specialists.
 
 #### 3.2.2 Intra-task Diversity: The Depth of Variation
 This often-overlooked dimension refers to generating variations within a single task type—tasks that share a goal but differ in their initial states or parameters. Using ALE as an example: typically, a game level's layout is fixed, allowing an agent to memorize a specific trajectory. However, this is where generative evaluation truly shines: it enables state space explosion.
 Consider this comparison: adding 100 different game levels merely requires the model to memorize 100 separate solutions. However, when introducing intra-task diversity, e.g., identifying 10 control variables for a game level (monster count, enemy health, inventory tools, etc.), each with 5 possible values, the state space grows to $10^5$ distinct configurations. This dramatically raises the difficulty of rote memorization and encourages generalized problem-solving.
 
-{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure5.png" class="img-fluid" caption="Figure 5. The Procgen benchmark expands intra-task diversity, increasing the state space to massive magnitudes (x-axis). As observed, only when the state space exceeds a certain threshold can we truly measure generalization performance (where training and testing curves converge) [@procegen]." %}
+{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure5.png" class="img-fluid" caption="Figure 5. The Procgen benchmark expands intra-task diversity, increasing the state space to massive magnitudes (x-axis). As observed, only when the state space exceeds a certain threshold can we truly measure generalization performance (where training and testing curves converge) <d-cite key=\"procegen\"></d-cite>." %}
 
 ### 3.3 Discovering Novel Reasoning Patterns
 
-However, not all task variables are effective. A common pitfall is generating variables that alter superficial aspects without creating new reasoning challenges. Research from UniCode [@unicode] reveals that sampling seed questions and merely changing the "story background" variable without altering the core logic does not result in significant performance differences. For example: when converted a card-game queue/stack simulation into an operating-system scheduling scenario (different narrative, same logic). This indicates that textual diversity alone is a solved problem for advanced LLMs and is not an "effective variable" for rigorous evaluation.
+However, not all task variables are effective. A common pitfall is generating variables that alter superficial aspects without creating new reasoning challenges. Research from UniCode <d-cite key="unicode"></d-cite> reveals that sampling seed questions and merely changing the "story background" variable without altering the core logic does not result in significant performance differences. For example: when converted a card-game queue/stack simulation into an operating-system scheduling scenario (different narrative, same logic). This indicates that textual diversity alone is a solved problem for advanced LLMs and is not an "effective variable" for rigorous evaluation.
 
-{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure6.png" class="img-fluid" caption="Figure 6. Modifying superficial text variables yields no performance gap between 'seed' and 'shadow' questions. In contrast, variables that alter core algorithm logic or introduce new knowledge combinations (CodeGenQS) create a substantial performance drop, proving they generate novel reasoning patterns [@unicode]." %}
+{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure6.png" class="img-fluid" caption="Figure 6. Modifying superficial text variables yields no performance gap between 'seed' and 'shadow' questions. In contrast, variables that alter core algorithm logic or introduce new knowledge combinations (CodeGenQS) create a substantial performance drop, proving they generate novel reasoning patterns <d-cite key=\"unicode\"></d-cite>." %}
 
 Therefore, the key is to identify "effective variables"—factors where a model's generalization is prone to break down. Current approaches often use expert intuition: decompose a task into candidate variables, and adjust one at a time while keeping others fixed. If a variable causes significant performance variation, it signals incomplete generalization and qualifies as effective. By identifying the right set of such variables, we unlock an infinite array of unique test cases, each embodying a novel reasoning pattern.
 
@@ -165,22 +165,22 @@ The biggest risk in generative evaluation is producing "garbage"—unsolvable pr
 
 #### 3.4.1 Ensuring Solvability
 We must guarantee that the generated preconditions allow for a solution. Domain-specific tools are often used for verification. Here are two examples:
-- **Symbolic Guarantees:** KUMO [@kumo] employs a SAT Solver (Boolean Satisfiability) during the generation phase. This mathematically enforces that every generated game board has a valid logical path to the truth, preventing impossible scenarios.
-- **Simulator Verification:** MCU [@mcu] utilizes the MineStudio simulator, a popular test bed for the Minecraft platform, as a ground-truth verifier. The LLM-generated initialization commands are executed in the game engine; if the engine throws an error (e.g., Spawning a mob type that doesn't exist.), the system detects it and triggers a self-reflection loop to correct the initial configuration.
+- **Symbolic Guarantees:** KUMO <d-cite key="kumo"></d-cite> employs a SAT Solver (Boolean Satisfiability) during the generation phase. This mathematically enforces that every generated game board has a valid logical path to the truth, preventing impossible scenarios.
+- **Simulator Verification:** MCU <d-cite key="mcu"></d-cite> utilizes the MineStudio simulator, a popular test bed for the Minecraft platform, as a ground-truth verifier. The LLM-generated initialization commands are executed in the game engine; if the engine throws an error (e.g., Spawning a mob type that doesn't exist.), the system detects it and triggers a self-reflection loop to correct the initial configuration.
 
-{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure7.png" class="img-fluid" caption="Figure 7. MineStudio acts as a natural verification environment, returning error codes to help correct mistakes in generative tasks [@mcu]." %}
+{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure7.png" class="img-fluid" caption="Figure 7. MineStudio acts as a natural verification environment, returning error codes to help correct mistakes in generative tasks <d-cite key=\"mcu\"></d-cite>." %}
 
 #### 3.4.2 Ensuring Label Correctness
 Without human labels, grading must also be automated. Solutions vary by task type:
 - **Programmatic Signals:** On established testing platforms like MineStudio, well-defined tasks (e.g., "mine a diamond") provide inherent success signals from the environment.
-- **Model-as-Judge:** For open-ended tasks (e.g., "build a scary house"), LLMs or VLMs act as judges. For example, MCU uses a Vision-Language Model (GPT-4V). By feeding the VLM specific, generated criteria (e.g., "Does the structure have a roof?"), it achieves 91.5% alignment with human raters [@mcu].
-- **Algorithmic Oracles:** For logic-based tasks, KUMO [@kumo] computes an optimal search policy as the oracle, while Unicode uses brute-force algorithms to maximize accuracy [@unicode].
+- **Model-as-Judge:** For open-ended tasks (e.g., "build a scary house"), LLMs or VLMs act as judges. For example, MCU uses a Vision-Language Model (GPT-4V). By feeding the VLM specific, generated criteria (e.g., "Does the structure have a roof?"), it achieves 91.5% alignment with human raters <d-cite key="mcu"></d-cite>.
+- **Algorithmic Oracles:** For logic-based tasks, KUMO <d-cite key="kumo"></d-cite> computes an optimal search policy as the oracle, while Unicode uses brute-force algorithms to maximize accuracy <d-cite key="unicode"></d-cite>.
 
 Both stages can be validated by periodically sampling tasks for human review.
 
 ## 4. Discussion
 
-### 4.1 Managing Error in Generative Frameworks
+### 4.1 Error in Generative Frameworks
 
 One might worry: "Is an automated evaluation pipeline as accurate as human evaluation?" In practice, as data scales up, 100% accuracy becomes an impractical goal. When the test set is uncontaminated, the total error primarily comes from two sources:
 - Sampling error, influenced by the number of tasks;
@@ -195,8 +195,12 @@ We can recover a calibrated estimate of the model's true performance. Moreover, 
 
 ### 4.2 Potential Influence on Society
 
-Static datasets inevitably suffer from inherent human bias, conflicts of interest, and financial incentives [@peeking]. For instance, when an evaluation firm also provides training data, it faces an ethical conflict, incentivized to design benchmarks that favor its clients' models. Furthermore, expert annotators introduce subjective preference bias; if they previously contributed to a model's training data, their unconscious criteria may align with that model's style. This systematic human bias prevents scores from reflecting real-world performance for a diverse user base. Generative Evaluation offers a critical path to mitigate these external biases by automating and standardizing the task creation process, potentially utilizing multiple LLM generators to further diversify and neutralize output biases.
+Static datasets inevitably suffer from inherent human bias, conflicts of interest, and financial incentives <d-cite key="peeking"></d-cite>. For instance, when an evaluation firm also provides training data, it faces an ethical conflict, incentivized to design benchmarks that favor its clients' models. Furthermore, expert annotators introduce subjective preference bias; if they previously contributed to a model's training data, their unconscious criteria may align with that model's style. This systematic human bias prevents scores from reflecting real-world performance for a diverse user base. Generative Evaluation offers a critical path to mitigate these external biases by automating and standardizing the task creation process, potentially utilizing multiple LLM generators to further diversify and neutralize output biases.
 
 ### 4.3 Limitations
 
-Generative evaluation still heavily rely on human priors to pick variables. Previously, datasets like Dynabench used human annotators to manually flag adversarial examples where models failed [@dynabench]. Now, we have elevated the abstraction level from the "sample" to the "variable," which significantly saves time and allows for automated generation. However, the selection of these variable factors still relies strongly on expert knowledge. If the variables are poorly defined, the quality of the entire dataset suffers.
+Generative evaluation still heavily rely on human priors to pick variables. Previously, datasets like Dynabench used human annotators to manually flag adversarial examples where models failed <d-cite key="dynabench"></d-cite>. Now, we have elevated the abstraction level from the "sample" to the "variable," which significantly saves time and allows for automated generation. However, the selection of these variable factors still relies strongly on expert knowledge. If the variables are poorly defined, the quality of the entire dataset suffers.
+
+### 4.3 Limitations
+
+Generative evaluation still heavily rely on human priors to pick variables. Previously, datasets like Dynabench used human annotators to manually flag adversarial examples where models failed <d-cite key="kiela2021dynabench"></d-cite>. Now, we have elevated the abstraction level from the "sample" to the "variable," which significantly saves time and allows for automated generation. However, the selection of these variable factors still relies strongly on expert knowledge. Future work may explore adaptive generation systems that can dynamically decompose these variables and adjust difficulty based on model behavior.
