@@ -35,7 +35,7 @@ bibliography: 2026-04-27-illusion-of-mastery.bib
 #     for hyperlinks within the post to work correctly.
 toc:
   - name: Introduction
-  - name: "The Problem: The Failures of Static Evaluation"
+  - name: "The Failures of Static Evaluation"
     subsections:
       - name: The Contamination Illusion
       - name: The Stagnant 80% Crisis
@@ -67,7 +67,7 @@ This points to an important issue: the fragility of models stems not merely from
 
 In this post, we argue that the path to AGI requires a fundamental shift in how we measure intelligence. We will examine how current static evaluation misleads the industry and introduce generative evaluation—not merely as a new metric, but as a dynamic engine for discovering novel reasoning patterns that remain challenging for models to generalize.
 
-## 2. The Problem: The Failures of Static Evaluation
+## 2. The Failures of Static Evaluation
 
 The current reliance on fixed, static evaluation benchmarks is actively misleading the industry. It fosters an "illusion of mastery," where improving scores on stagnant datasets does not translate to generalizable intelligence. This systematic flaw is rooted in the following key issues:
 
@@ -87,7 +87,7 @@ The acceleration of data collection and model training has created a race we are
 
 While increasing model and dataset sizes have equipped current models with a degree of generalization (e.g., solving unseen math problems), the "memorization trap" persists. It has simply evolved into a higher-level fixed pattern matching. Models memorize the fixed path to solve a specific set of problems but lack the ability to dynamically adjust reasoning path on novel context. A clear symptom of this trend is the widespread $80\%$ crisis, where models excel at the majority of common tasks but performance sharply drops on the remaining $20\%$ of novel challenges.
 
-Early models like BERT <d-cite key="bert"></d-cite> made huge leaps, quickly reaching around $80\%$ accuracy on challenging benchmarks like SuperGLUE <d-cite key="superglue"></d-cite>. However, vastly larger models such as GPT-4<d-cite key="gpt-4"></d-cite> and LLaMA variants <d-cite key="llama"></d-cite> now only push performance up by a few marginal percentage points. This slowdown occurs because the final $20\%$ consists of rare and diverse corner cases—the "long tail pattern". We are essentially spending billions of dollars to buy those final, expensive $1\%$ gains.
+Early models like BERT <d-cite key="bert"></d-cite> made huge leaps, quickly reaching around $80\%$ accuracy on challenging benchmarks like SuperGLUE <d-cite key="superglue"></d-cite>. However, vastly larger models such as GPT-4<d-cite key="gpt-4"></d-cite> and LLaMA variants <d-cite key="llama"></d-cite> only push performance up by a few marginal percentage points. This slowdown occurs because the final $20\%$ consists of rare and diverse corner cases. **We are essentially spending billions of dollars to buy those final, expensive $1\%$ gains**.
 
 This leads to a resource paradox: according to scaling laws, improving performance on these sparse long-tail examples requires exponentially more parameters and data.
 Scaling laws describe how model loss $L$ decreases as we scale up model size $N$ and dataset size $D$. A common form is:
@@ -116,29 +116,16 @@ In high-stakes domains such as autonomous driving, $98\%$ of the data might be c
 If our final destination is AGI, we have a fundamental problem: we are currently using finite sets to evaluate an AGI that is defined by its ability to solve unlimited diverse tasks. There is a mismatch between our target and our actual evaluation methods, creating a gap between AGI and current SOTA models. We want agents to be open-ended, possessing the capacity to generate endless solutions for scenarios that may not yet exist <d-cite key="open,mcu,international-safety"></d-cite>. As Elon Musk said in an interview: if an spaceship lands on the highway, a truly intelligent autonomous driving system must react correctly. Our objective is a "super-agent" capable of handling infinite novelty, not merely taking a fixed exam.
 
 
-
-<!-- 
-### 2.5 High Cost and Inefficiency
-
-The creation of robust static benchmarks is an incredibly resource-intensive endeavor, and even the best efforts are short-lived.
-
-- **Example Cost:** Projects like BIG-bench <d-cite key="bigbench"></d-cite> involved the labor of over 440 top researchers for two years to collect $204$ diverse tasks, representing an implicit cost of millions of dollars. Similarly, the SuperGLUE <d-cite key="superglue"></d-cite> benchmarks required $80+$ expert annotators.
-- **Fast Saturation:** Despite this immense investment, even these meticulously curated datasets face the same risk of rapid saturation and contamination. The moment a score is achieved, the data distribution is "seen," and the expensive benchmark begins its inevitable slide toward being a memory test. Even an Olympic-level difficult problem set AIME <d-cite key="aime"></d-cite> can be $98.7\%$ saturated within months of its release.
-
-<div style="width: 95%; margin: 0 auto;">
-{% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure4.png" class="img-fluid" caption="Figure 4. Benchmark saturation over time for popular benchmarks, normalized with initial performance at minus one and human performance at zero <d-cite key=\"international-safety\"></d-cite>." %}
-</div>  -->
-
-
-
-
 ## 3. The Blueprint of Generative Evaluation
 
-As we have discussed, static benchmarks are facing an existential crisis due to data contamination and saturation. The industry is shifting towards generative evaluation, a paradigm where the benchmark is not a fixed dataset, but an intelligent engine capable of producing an infinite stream of novel tasks.
+As we have discussed, static benchmarks are facing an existential crisis due to their inability to probe critical generalization. To escape this cycle, the industry is gradually shifting toward a new paradigm: generative evaluation. Here, the benchmark is not a fixed dataset but an intelligent engine capable of producing an infinite, dynamic stream of novel tasks.
+
+This shift is already visible in several research threads. OpenAI’s Procgen <d-cite key="procegen"></d-cite> introduce programmatic generation to create new game levels by shuffling key variables. Dynabench <d-cite key="dynabench"></d-cite> incorporate a human‑in‑the‑loop to iteratively add adversarial examples. LiveCodeBench and SWE‑bench-Live <d-cite key="livecodebench,swebenchlive"></d-cite> employ live updates from the web to resist contamination. Efforts like SWE‑rebench, DARG and UniCode <d-cite key="swerebench,Darg,time,unicode"></d-cite> vary evaluation environments to identify memorization patterns. Frameworks like MCU and OMGEval <d-cite key="mcu,OMGEval"></d-cite> extend evaluation into open‑ended domains to explore the broader boundaries of reasoning ability.
+
 
 ### 3.1 Core Concepts
 
-Generative Evaluation fundamentally addresses the core failures of static benchmarks by shifting the focus from a fixed dataset to a dynamic, infinite task-generation engine. Crucially, it resolves the issues of contamination, saturation, and the high cost of manual curation through three mechanisms:
+Building on the related work above, we distill the common objective of generative evaluation. Crucially, it addresses the issues of pattern memorization and probe true reasoning ability through three mechanisms:
 
 - **Infinite Diversity:** By generating an unbounded stream of diverse and novel tasks, the system ensures test cases are truly unseen during training, making rote memorization mathematically impossible. This forces models to rely on genuine reasoning and generalization.
 - **Targets Novel Reasoning Pattern:** Unlike static benchmarks biased toward high-frequency patterns, generative evaluation can be deliberately engineered to probe high-impact corner cases and "sensible factors" that challenge a model's true generalization limits. Thus, evaluation shifts from measuring average performance to stress-testing critical weaknesses.
@@ -180,7 +167,7 @@ We must guarantee that the generated preconditions allow for a solution. Domain-
 #### 3.4.2 Ensuring Label Correctness
 Without human labels, grading must also be automated. Solutions vary by task type:
 - **Programmatic Signals:** On established testing platforms like MineStudio, well-defined tasks (e.g., "mine a diamond") provide inherent success signals from the environment.
-- **Model-as-Judge:** For open-ended tasks (e.g., "build a scary house"), LLMs or VLMs act as judges. For example, MCU uses a Vision-Language Model (GPT-4V). By feeding the VLM specific, generated criteria (e.g., "Does the structure have a roof?"), it achieves 91.5% alignment with human raters <d-cite key="mcu"></d-cite>.
+- **Model-as-Judge:** For open-ended tasks (e.g., "build a scary house"), LLMs or VLMs act as judges <d-cite key="llmjudge,llmjudge1"></d-cite>. For example, MCU uses a Vision-Language Model (GPT-4V). By feeding the VLM specific, generated criteria (e.g., "Does the structure have a roof?"), it achieves 91.5% alignment with human raters <d-cite key="mcu"></d-cite>.
 - **Algorithmic Oracles:** For logic-based tasks, KUMO <d-cite key="kumo"></d-cite> computes an optimal search policy as the oracle, while Unicode uses brute-force algorithms to maximize accuracy <d-cite key="unicode"></d-cite>.
 
 Both stages can be validated by periodically sampling tasks for human review.
