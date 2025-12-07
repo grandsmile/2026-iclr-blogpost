@@ -47,6 +47,7 @@ toc:
       - name: Generating Diverse, Contamination-Resistant Tasks
       - name: Discovering Novel Reasoning Patterns
       - name: Ensuring Reliability in the Generative Pipeline
+      - name: Generative Evaluation as a Self-Improvement Engine
   - name: Discussion
     subsections:
       - name: Managing Error in Generative Frameworks
@@ -116,7 +117,7 @@ Static benchmarks typically mirror real-world data distributions, which makes th
 
 ### 2.4 The Mismatch on the Path to AGI
 
-If our final destination is AGI, we have a fundamental problem: **we are currently using finite sets to evaluate an AGI that is defined by its ability to solve unlimited diverse tasks.** There is a mismatch between our target and our actual evaluation methods, creating a gap between AGI and current SOTA models. We want agents to be open-ended, possessing the capacity to generate endless solutions for scenarios that may not yet exist <d-cite key="open,mcu,international-safety"></d-cite>. As Elon Musk said in an interview: if an spaceship lands on the highway, a truly intelligent autonomous driving system must react correctly. Our objective is a "super-agent" capable of handling infinite novelty, not merely taking a fixed exam.
+If our final destination is AGI, we have a fundamental problem: **we are currently using finite sets to evaluate an AGI that is defined by its ability to solve unlimited diverse tasks.** There is a mismatch between our target and our actual evaluation methods, creating a gap between AGI and current SOTA models. We want agents to be open-ended, possessing the capacity to generate endless solutions for scenarios that may not yet exist <d-cite key="open,mcu,international-safety"></d-cite>. As Elon Musk said in an interview <d-cite key="musk"></d-cite>: For self-driving, even if the road is painted completely wrong and a UFO lands in the middle of the road, the car still cannot crash and still needs to do the right thing. Our objective is a "super-agent" capable of handling infinite novelty, not merely taking a fixed exam.
 
 ## 3. The Blueprint of Generative Evaluation
 
@@ -178,6 +179,10 @@ In the absence of human-provided labels, the scoring of model outputs must also 
 - **Algorithmic Oracles:** For tasks grounded in formal logic or mathematics, deterministic algorithms serve as the ground truth. KUMO computes an optimal search policy as its oracle <d-cite key="kumo"></d-cite>, while Unicode uses brute-force computation to verify solutions <d-cite key="unicode"></d-cite>.
 
 The reliability of both the solvability check and the labeling process can be further validated by periodically sampling generated tasks for human review.
+
+
+### 3.5 Generative Evaluation as a Self-Improvement Engine
+Generative evaluation need not be only a measurement mechanism — it can also provide a scalable training signal that enables models to improve continuously. A striking recent example is DeepSeek’s release of DeepSeekMath-V2 <d-cite key="shao2025deepseekmath"></d-cite>, a self-verifiable mathematical reasoning model that the authors report achieves gold-level performance on IMO 2025 problems. DeepSeekMath-V2 showcases a self-verifiable loop for mathematical reasoning: a generator proposes candidate proofs, a learned verifier scores and critiques them, and the generator is optimized using the verifier as a reward, while the verifier itself is strengthened by labeling harder examples produced in later rounds. A different line of work rStar-Coder <d-cite key="liu2025rstar"></d-cite> illustrates how a large, self-verified dataset for code reasoning can scale model competence. Combining these ideas with a generative evaluation framework thus creates a virtuous cycle: the evaluation engine uncovers challenging and novel cases, including rare corner cases; the model attempts to solve and self-check them; and the verified outcomes are fed back as training signals to strengthen both the generator and the verifier.
 
 ## 4. Discussion
 
