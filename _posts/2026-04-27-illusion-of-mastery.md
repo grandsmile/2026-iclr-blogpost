@@ -81,7 +81,7 @@ The acceleration of data collection and model training has created a race we are
 
 {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure2.png" class="img-fluid" caption="Figure 2: DeepSeek-Instruct and GPT-4o perform considerably worse on problems released after their respective release and cutoff dates, indicating potential contamination in the earlier problems <d-cite key=\"livecodebench\"></d-cite>." %}
 
-- **The Memorization Trap:** When test data leaks into the training corpus, models exploit those leaks to reproduce surface patterns instead of learning transferable reasoning strategies. This is exemplified by OpenAI's Procgen test<d-cite key=\"procegen\"></d-cite>: models trained on a fixed order of levels (progressing only upon success) perform perfectly. However, at test time, when the level order is randomized, they fail completely. **This strongly suggests that the agents did not acquire a generalizable policy for the game, but rather memorized action sequences specific to the fixed level order.**
+- **The Memorization Trap:** When test data leaks into the training corpus, models exploit those leaks to reproduce surface patterns instead of learning transferable reasoning strategies. This is exemplified by OpenAI's Procgen test <d-cite key="procegen"></d-cite>: models trained on a fixed order of levels (progressing only upon success) perform perfectly. However, at test time, when the level order is randomized, they fail completely. **This strongly suggests that the agents did not acquire a generalizable policy for the game, but rather memorized action sequences specific to the fixed level order.**
 
 {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure3.png" class="img-fluid" caption="Figure 3: The agent achieves promising results during training on a fixed sequence but fails to generalize when the level order is shuffled at test time <d-cite key=\"procegen\"></d-cite>." %}
 
@@ -206,7 +206,7 @@ We can recover a calibrated estimate of the model's true performance. Moreover, 
 
 Static datasets inevitably suffer from inherent human bias, conflicts of interest, and financial incentives <d-cite key="peeking"></d-cite>. For instance, when an evaluation firm also provides training data, it faces an ethical conflict, incentivized to design benchmarks that favor its clients' models. Furthermore, expert annotators introduce subjective preference bias; if they previously contributed to a model's training data, their unconscious criteria may align with that model's style. **This systematic human bias prevents scores from reflecting real-world performance for a diverse user base.**
 
-**Generative Evaluation offers a critical path to mitigate these external biases by automating and standardizing the task creation process, potentially utilizing multiple LLM generators to further diversify and neutralize output biases.**
+Generative Evaluation offers a critical path to mitigate these external biases by automating and standardizing the task creation process, potentially utilizing multiple LLM generators to further diversify and neutralize output biases.
 
 ### 4.3 Limitations & Future Work
 
