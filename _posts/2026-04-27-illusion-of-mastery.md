@@ -39,7 +39,7 @@ toc:
     subsections:
       - name: The Contamination Illusion
       - name: The Stagnant 80% Crisis
-      - name: Ignoring High-Impact Corner Cases
+      - name: The High-Impact Blind Spot
       - name: The Mismatch on the Path to AGI
   - name: "The Blueprint of Generative Evaluation"
     subsections:
@@ -107,7 +107,7 @@ Here:
 
 As $N$ or $D$ increases, loss decreases but at a slowing rate. Early gains are rapid; later improvements become far more expensive. **We are now spending billions for each marginal gain, chasing perfection via fixed pattern matching instead of developing reasoning algorithms for future challenges.** Relying only on scaling is inefficient and unsustainable.
 
-### 2.3 Ignoring High-Impact Corner Cases
+### 2.3 The High-Impact Blind Spot
 
 Static benchmarks typically mirror real-world data distributions, which makes them appear representative but also introduces a hidden bias: **they underweight the most consequential failures**. A substantial body of work documents that corner cases follow a long-tail distribution and are therefore extremely rare in collected logs <d-cite key="cornersurvey"></d-cite><d-cite key="corner"></d-cite>. These rare events carry outsized safety impact so models can achieve high average performance on large static datasets while still failing catastrophically on corner cases. Empirical studies of autonomous driving quantify this sparsity: Waymo’s WOD-E2E dataset curates challenging long-tail driving cases and reports that **such corner cases occur with frequency below $0.03\%$ in daily driving** <d-cite key="waymo"></d-cite>. Together these findings imply that static datasets will systematically underrepresent high-impact situations unless evaluation intentionally oversamples or emphasizes those corner cases.
 
