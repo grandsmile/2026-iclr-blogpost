@@ -144,7 +144,7 @@ This dimension represents coverage across distinct domains. Just as a student mu
 {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/inter-task.png" class="img-fluid" caption="Figure 5. The MCU task set is sourced from the Minecraft wiki, in-game data, existing benchmarks, and brainstorming sessions. It spans 11 major categories and 41 subcategories, ensuring high inter-task diversity. <d-cite key=\"mcu\"></d-cite>." %}
 
 #### 3.2.2 Intra-task Diversity: The Depth of Variation
-This often-overlooked dimension refers to generating variations within a single task type—tasks that share a goal but differ in their initial states or parameters. Using ALE as an example: a game level's layout is fixed, allowing an agent to memorize a specific trajectory. **However, generative evaluation enables state space explosion.**
+This often-overlooked dimension refers to generating variations within a single task type—tasks that share a goal but differ in their initial states or parameters. Using ALE <d-cite key="ALE"></d-cite> as an example: a game level's layout is fixed, allowing an agent to memorize a specific trajectory. **However, generative evaluation enables state space explosion.**
 Consider this comparison: adding 100 different game levels merely requires the model to memorize 100 separate solutions. In contrast, by introducing intra-task diversity, e.g., identifying 5 control variables for a game level (monster count, enemy health, inventory tools, etc.), each with 10 possible values, the state space grows to $10^{5}$ distinct configurations. **This dramatically raises the difficulty of rote memorization and encourages generalized problem-solving.**
 
 {% include figure.liquid path="assets/img/2026-04-27-illusion-of-mastery/figure5.png" class="img-fluid" caption="Figure 6. The Procgen benchmark expands intra-task diversity, increasing the state space to massive magnitudes (x-axis). As observed, only when the state space exceeds a certain threshold can we truly measure generalization performance (where training and testing curves converge) <d-cite key=\"procegen\"></d-cite>." %}
@@ -186,21 +186,27 @@ Generative evaluation need not be only a measurement mechanism — **it can also
 
 ## 4. Discussion
 
+Here is the English Markdown version with the clarified notation.
+
 ### 4.1 Managing Errors in Generative Frameworks
 
 One might worry: "Is an automated evaluation pipeline as accurate as human evaluation?" In practice, as data scales up, 100% accuracy becomes an impractical goal. When the test set is uncontaminated, the total error primarily comes from two sources:
-- Sampling error, influenced by the number of tasks;
-- System error, introduced by the generative evaluation process.
+- **Sampling error**, influenced by the number of tasks;
+- **System error**, introduced by the generative evaluation process.
 
 Human-curated evaluation carries zero system error, but due to the limited number of tasks, sampling error can be high. For example, if Model A and Model B perform equally well overall but excel in different areas, a small task set biased toward Model A's strengths may misleadingly show it as superior.
 
 **In contrast, a generative evaluation system, while having some inherent system error, allows that error to be estimated and corrected.** For instance, by testing the model on a small set of known wrong examples, we can measure its false pass rate $q_e$. Then, using the formula:
 
 $$
-p = \frac{\text{Observed Pass Rate} - \text{Generation Error Rate} \times q_e}{1 - \text{Generation Error Rate}}
+p = \frac{p_{\text{obs}} - \varepsilon \cdot q_e}{1 - \varepsilon}
 $$
 
-We can recover a calibrated estimate of the model's true performance. Moreover, with a sufficiently large and diverse set of tasks, the sampling error of the generative system becomes negligible. **Therefore, by combining scalable task generation with systematic error correction, we can achieve a more reliable evaluation framework, even if it requires embracing a small amount of controlled noise.**
+we can recover a calibrated estimate $p$ of the model's true performance. Here, $p_{\text{obs}}$ is the observed pass rate, and $\varepsilon$ is the error rate of the generative process.
+
+Moreover, with a sufficiently large and diverse set of tasks, the sampling error of the generative system becomes negligible. **Therefore, by combining scalable task generation with systematic error correction, we can achieve a more reliable evaluation framework, even if it requires embracing a small amount of controlled noise.**
+
+
 
 ### 4.2 Potential Influence on Society
 
